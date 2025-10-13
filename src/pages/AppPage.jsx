@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AppPage.css';
 
 function AppPage() {
+  const navigate = useNavigate();
   const [selectedCardTypes, setSelectedCardTypes] = useState([]);
   const [selectedRewardTypes, setSelectedRewardTypes] = useState([]);
   const [annualFeeRange, setAnnualFeeRange] = useState('');
@@ -50,7 +52,8 @@ function AppPage() {
       uploadedFile: uploadedFile?.name,
       otherDescription
     });
-    alert('Generating recommendations...');
+    // Navigate to results page
+    navigate('/results');
   };
 
   const renderContent = () => {
