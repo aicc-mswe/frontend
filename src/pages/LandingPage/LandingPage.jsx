@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import './LandingPage.css';
+import styles from './LandingPage.module.css';
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -13,12 +13,12 @@ function LandingPage() {
   };
 
   return (
-    <div className="landing-page">
+    <div className={styles.landingPage}>
       {/* Navigation Bar */}
-      <nav className="navbar">
-        <div className="nav-container">
-          <div className="logo">AICC</div>
-          <ul className="nav-links">
+      <nav className={styles.navbar}>
+        <div className={styles.navContainer}>
+          <div className={styles.logo}>AICC</div>
+          <ul className={styles.navLinks}>
             <li><a onClick={() => handleNavigation('/about')}>About</a></li>
             <li><a onClick={() => handleNavigation('/team')}>Team</a></li>
             <li><a onClick={() => handleNavigation('/contact')}>Contact</a></li>
@@ -27,11 +27,11 @@ function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-content">
+      <section className={styles.hero}>
+        <div className={styles.heroContent}>
           <h1>AI-Powered Credit Card Recommendations</h1>
           <p>Find the perfect credit card tailored to your spending habits and lifestyle</p>
-          <button className="get-started-btn" onClick={handleGetStarted}>
+          <button className={styles.getStartedBtn} onClick={handleGetStarted}>
             Get Started
           </button>
         </div>

@@ -1,15 +1,15 @@
 import { useNavigate } from 'react-router-dom';
-import './InfoPage.css';
+import styles from './ContactPage.module.css';
 
 function ContactPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="info-page">
-      <nav className="navbar">
-        <div className="nav-container">
-          <div className="logo" onClick={() => navigate('/')}>AICC</div>
-          <ul className="nav-links">
+    <div className={styles.infoPage}>
+      <nav className={styles.navbar}>
+        <div className={styles.navContainer}>
+          <div className={styles.logo} onClick={() => navigate('/')}>AICC</div>
+          <ul className={styles.navLinks}>
             <li><a onClick={() => navigate('/about')}>About</a></li>
             <li><a onClick={() => navigate('/team')}>Team</a></li>
             <li><a onClick={() => navigate('/contact')}>Contact</a></li>
@@ -17,30 +17,30 @@ function ContactPage() {
         </div>
       </nav>
 
-      <div className="content-section">
-        <div className="content-container">
+      <div className={styles.contentSection}>
+        <div className={styles.contentContainer}>
           <h1>Contact Us</h1>
-          <div className="content-text">
+          <div className={styles.contentText}>
             <p>Have questions? We'd love to hear from you.</p>
             
-            <div className="contact-details">
-              <div className="contact-item">
+            <div className={styles.contactDetails}>
+              <div className={styles.contactItem}>
                 <h3>Email</h3>
                 <p>info@aicc.com</p>
               </div>
               
-              <div className="contact-item">
+              <div className={styles.contactItem}>
                 <h3>Phone</h3>
                 <p>+1 (555) 123-4567</p>
               </div>
               
-              <div className="contact-item">
+              <div className={styles.contactItem}>
                 <h3>Office Hours</h3>
                 <p>Monday - Friday: 9:00 AM - 6:00 PM EST</p>
               </div>
             </div>
           </div>
-          <button className="back-btn" onClick={() => navigate('/')}>
+          <button className={styles.backBtn} onClick={() => navigate('/')}>
             Back to Home
           </button>
         </div>

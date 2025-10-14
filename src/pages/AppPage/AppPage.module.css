@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-.app-page {
+.appPage {
   display: flex;
   min-height: 100vh;
   background: #f9fafb;
@@ -27,23 +27,23 @@
   z-index: 100;
 }
 
-.sidebar-header {
+.sidebarHeader {
   padding: 2rem 1.5rem;
   border-bottom: 1px solid #333333;
 }
 
-.sidebar-header h2 {
+.sidebarHeader h2 {
   font-size: 1.8rem;
   font-weight: bold;
   letter-spacing: 2px;
   color: white;
 }
 
-.sidebar-nav {
+.sidebarNav {
   padding: 1rem 0;
 }
 
-.nav-item {
+.navItem {
   width: 100%;
   display: flex;
   align-items: center;
@@ -60,19 +60,19 @@
   text-align: left;
 }
 
-.nav-item:hover {
+.navItem:hover {
   background: #1f2937;
   color: white;
 }
 
-.nav-item.active {
+.navItem.active {
   background: #1f2937;
   color: white;
   border-left: 4px solid white;
 }
 
 /* Main Content */
-.main-content {
+.mainContent {
   flex: 1;
   margin-left: 280px;
   padding: 2rem;
@@ -84,27 +84,33 @@
 }
 
 /* Menu Content (for History and Chat) */
-.menu-content {
+.menuContent {
   max-width: 900px;
   margin: 0 auto;
   text-align: center;
 }
 
-.menu-content h2 {
+.menuContent h2 {
   font-size: 2.5rem;
   color: #000000;
   margin-bottom: 2rem;
   font-weight: 700;
 }
 
-.menu-content .coming-soon {
+.menuContent .comingSoon {
+  font-size: 1.2rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.comingSoon {
   font-size: 1.2rem;
   color: #6b7280;
   font-style: italic;
 }
 
 /* Recommendation Form */
-.recommendation-form {
+.recommendationForm {
   max-width: 1100px;
   width: 100%;
   margin: 0 auto;
@@ -114,7 +120,7 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-.recommendation-form h1 {
+.recommendationForm h1 {
   font-size: 2rem;
   color: #000000;
   margin-bottom: 0.3rem;
@@ -128,31 +134,31 @@
 }
 
 /* Form Sections */
-.form-section {
+.formSection {
   margin-bottom: 1.5rem;
 }
 
-.form-section h3 {
+.formSection h3 {
   font-size: 1.1rem;
   color: #000000;
   margin-bottom: 0.6rem;
   font-weight: 600;
 }
 
-.helper-text {
+.helperText {
   font-size: 0.85rem;
   color: #6b7280;
   margin-bottom: 0.6rem;
 }
 
 /* Checkbox Grid */
-.checkbox-grid {
+.checkboxGrid {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.checkbox-item {
+.checkboxItem {
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -164,32 +170,32 @@
   white-space: nowrap;
 }
 
-.checkbox-item:hover {
+.checkboxItem:hover {
   border-color: #000000;
   background: #f9fafb;
 }
 
-.checkbox-item input[type="checkbox"] {
+.checkboxItem input[type="checkbox"] {
   width: 0.9rem;
   height: 0.9rem;
   cursor: pointer;
   accent-color: #000000;
 }
 
-.checkbox-item span {
+.checkboxItem span {
   font-size: 0.85rem;
   color: #1f2937;
   font-weight: 500;
 }
 
 /* Radio Group */
-.radio-group {
+.radioGroup {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.radio-item {
+.radioItem {
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -201,34 +207,34 @@
   white-space: nowrap;
 }
 
-.radio-item:hover {
+.radioItem:hover {
   border-color: #000000;
   background: #f9fafb;
 }
 
-.radio-item input[type="radio"] {
+.radioItem input[type="radio"] {
   width: 0.9rem;
   height: 0.9rem;
   cursor: pointer;
   accent-color: #000000;
 }
 
-.radio-item span {
+.radioItem span {
   font-size: 0.85rem;
   color: #1f2937;
   font-weight: 500;
 }
 
 /* File Upload */
-.file-upload-wrapper {
+.fileUploadWrapper {
   position: relative;
 }
 
-.file-input {
+.fileInput {
   display: none;
 }
 
-.file-upload-btn {
+.fileUploadBtn {
   display: inline-block;
   padding: 0.7rem 1.5rem;
   background: #f3f4f6;
@@ -243,13 +249,13 @@
   min-width: 200px;
 }
 
-.file-upload-btn:hover {
+.fileUploadBtn:hover {
   border-color: #000000;
   background: #e5e7eb;
 }
 
 /* Textarea */
-.description-textarea {
+.descriptionTextarea {
   width: 100%;
   padding: 0.7rem;
   border: 2px solid #e5e7eb;
@@ -261,17 +267,17 @@
   transition: all 0.3s ease;
 }
 
-.description-textarea:focus {
+.descriptionTextarea:focus {
   outline: none;
   border-color: #000000;
 }
 
-.description-textarea::placeholder {
+.descriptionTextarea::placeholder {
   color: #9ca3af;
 }
 
 /* Generate Button */
-.generate-btn {
+.generateBtn {
   width: 100%;
   padding: 0.9rem;
   background: #000000;
@@ -286,13 +292,13 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-.generate-btn:hover {
+.generateBtn:hover {
   background: #1f2937;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-.generate-btn:active {
+.generateBtn:active {
   transform: translateY(0);
 }
 
@@ -302,45 +308,44 @@
     width: 200px;
   }
 
-  .sidebar-header h2 {
+  .sidebarHeader h2 {
     font-size: 1.5rem;
   }
 
-  .nav-item {
+  .navItem {
     padding: 0.75rem 1rem;
     font-size: 0.9rem;
   }
 
-  .nav-item span {
+  .navItem span {
     font-size: 0.85rem;
   }
 
-  .main-content {
+  .mainContent {
     margin-left: 200px;
     padding: 1.5rem;
   }
 
-  .recommendation-form {
+  .recommendationForm {
     padding: 2rem 1.5rem;
   }
 
-  .recommendation-form h1 {
+  .recommendationForm h1 {
     font-size: 2rem;
   }
 
-  .checkbox-grid,
-  .radio-group {
+  .checkboxGrid,
+  .radioGroup {
     gap: 0.5rem;
   }
 
-  .checkbox-item,
-  .radio-item {
+  .checkboxItem,
+  .radioItem {
     padding: 0.4rem 0.75rem;
   }
 
-  .checkbox-item span,
-  .radio-item span {
+  .checkboxItem span,
+  .radioItem span {
     font-size: 0.85rem;
   }
 }
-

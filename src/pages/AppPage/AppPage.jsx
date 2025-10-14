@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './AppPage.css';
+import styles from './AppPage.module.css';
 
 function AppPage() {
   const navigate = useNavigate();
@@ -59,33 +59,33 @@ function AppPage() {
   const renderContent = () => {
     if (activeMenu === 'history') {
       return (
-        <div className="menu-content">
+        <div className={styles.menuContent}>
           <h2>Recommendation History</h2>
-          <p className="coming-soon">No recommendation history yet.</p>
+          <p className={styles.comingSoon}>No recommendation history yet.</p>
         </div>
       );
     }
 
     if (activeMenu === 'chat') {
       return (
-        <div className="menu-content">
+        <div className={styles.menuContent}>
           <h2>Chat History</h2>
-          <p className="coming-soon">No chat history yet.</p>
+          <p className={styles.comingSoon}>No chat history yet.</p>
         </div>
       );
     }
 
     return (
-      <div className="recommendation-form">
+      <div className={styles.recommendationForm}>
         <h1>Credit Card Recommendation</h1>
-        <p className="subtitle">Find your perfect credit card by selecting your preferences</p>
+        <p className={styles.subtitle}>Find your perfect credit card by selecting your preferences</p>
 
         {/* Card Type Selection */}
-        <div className="form-section">
+        <div className={styles.formSection}>
           <h3>Card Type</h3>
-          <div className="checkbox-grid">
+          <div className={styles.checkboxGrid}>
             {cardTypes.map(type => (
-              <label key={type} className="checkbox-item">
+              <label key={type} className={styles.checkboxItem}>
                 <input
                   type="checkbox"
                   checked={selectedCardTypes.includes(type)}
@@ -98,11 +98,11 @@ function AppPage() {
         </div>
 
         {/* Reward Type Selection */}
-        <div className="form-section">
+        <div className={styles.formSection}>
           <h3>Reward Type</h3>
-          <div className="checkbox-grid">
+          <div className={styles.checkboxGrid}>
             {rewardTypes.map(type => (
-              <label key={type} className="checkbox-item">
+              <label key={type} className={styles.checkboxItem}>
                 <input
                   type="checkbox"
                   checked={selectedRewardTypes.includes(type)}
@@ -115,11 +115,11 @@ function AppPage() {
         </div>
 
         {/* Annual Fee Range */}
-        <div className="form-section">
+        <div className={styles.formSection}>
           <h3>Annual Fee Range</h3>
-          <div className="radio-group">
+          <div className={styles.radioGroup}>
             {feeRanges.map(range => (
-              <label key={range.value} className="radio-item">
+              <label key={range.value} className={styles.radioItem}>
                 <input
                   type="radio"
                   name="feeRange"
@@ -134,29 +134,29 @@ function AppPage() {
         </div>
 
         {/* Statement Upload */}
-        <div className="form-section">
+        <div className={styles.formSection}>
           <h3>Upload Statement</h3>
-          <p className="helper-text">Upload your credit card statement to get personalized recommendations</p>
-          <div className="file-upload-wrapper">
+          <p className={styles.helperText}>Upload your credit card statement to get personalized recommendations</p>
+          <div className={styles.fileUploadWrapper}>
             <input
               type="file"
               id="file-upload"
-              className="file-input"
+              className={styles.fileInput}
               accept=".pdf,.csv,.xlsx"
               onChange={handleFileUpload}
             />
-            <label htmlFor="file-upload" className="file-upload-btn">
+            <label htmlFor="file-upload" className={styles.fileUploadBtn}>
               {uploadedFile ? uploadedFile.name : 'Choose File'}
             </label>
           </div>
         </div>
 
         {/* Other Description */}
-        <div className="form-section">
+        <div className={styles.formSection}>
           <h3>Additional Requirements</h3>
-          <p className="helper-text">Describe any specific requirements or preferences</p>
+          <p className={styles.helperText}>Describe any specific requirements or preferences</p>
           <textarea
-            className="description-textarea"
+            className={styles.descriptionTextarea}
             placeholder="E.g., I travel frequently to Europe, prefer no foreign transaction fees..."
             value={otherDescription}
             onChange={(e) => setOtherDescription(e.target.value)}
@@ -165,7 +165,7 @@ function AppPage() {
         </div>
 
         {/* Generate Button */}
-        <button className="generate-btn" onClick={handleGenerateRecommendation}>
+        <button className={styles.generateBtn} onClick={handleGenerateRecommendation}>
           Generate Recommendation
         </button>
       </div>
@@ -173,27 +173,27 @@ function AppPage() {
   };
 
   return (
-    <div className="app-page">
+    <div className={styles.appPage}>
       {/* Sidebar Navigation */}
-      <aside className="sidebar">
-        <div className="sidebar-header">
+      <aside className={styles.sidebar}>
+        <div className={styles.sidebarHeader}>
           <h2>AICC</h2>
         </div>
-        <nav className="sidebar-nav">
+        <nav className={styles.sidebarNav}>
           <button
-            className={`nav-item ${activeMenu === 'recommend' ? 'active' : ''}`}
+            className={`${styles.navItem} ${activeMenu === 'recommend' ? styles.active : ''}`}
             onClick={() => setActiveMenu('recommend')}
           >
             <span>New Recommendation</span>
           </button>
           <button
-            className={`nav-item ${activeMenu === 'history' ? 'active' : ''}`}
+            className={`${styles.navItem} ${activeMenu === 'history' ? styles.active : ''}`}
             onClick={() => setActiveMenu('history')}
           >
             <span>Recommendation History</span>
           </button>
           <button
-            className={`nav-item ${activeMenu === 'chat' ? 'active' : ''}`}
+            className={`${styles.navItem} ${activeMenu === 'chat' ? styles.active : ''}`}
             onClick={() => setActiveMenu('chat')}
           >
             <span>Chat History</span>
@@ -202,7 +202,7 @@ function AppPage() {
       </aside>
 
       {/* Main Content */}
-      <main className="main-content">
+      <main className={styles.mainContent}>
         {renderContent()}
       </main>
     </div>

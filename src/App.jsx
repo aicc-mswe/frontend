@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import AboutPage from './pages/AboutPage';
-import TeamPage from './pages/TeamPage';
-import ContactPage from './pages/ContactPage';
-import AppPage from './pages/AppPage';
-import RecommendationResultPage from './pages/RecommendationResultPage';
+import LandingPage from './pages/LandingPage/LandingPage';
+import AboutPage from './pages/AboutPage/AboutPage';
+import TeamPage from './pages/TeamPage/TeamPage';
+import ContactPage from './pages/ContactPage/ContactPage';
+import AppPage from './pages/AppPage/AppPage';
+import RecommendationResultPage from './pages/RecommendationResultPage/RecommendationResultPage';
 import './App.css'
 
 function App() {

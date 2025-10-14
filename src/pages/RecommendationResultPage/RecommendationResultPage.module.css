@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-.result-page {
+.resultPage {
   display: flex;
   min-height: 100vh;
   background: #f9fafb;
@@ -27,23 +27,23 @@
   z-index: 100;
 }
 
-.sidebar-header {
+.sidebarHeader {
   padding: 2rem 1.5rem;
   border-bottom: 1px solid #333333;
 }
 
-.sidebar-header h2 {
+.sidebarHeader h2 {
   font-size: 1.8rem;
   font-weight: bold;
   letter-spacing: 2px;
   color: white;
 }
 
-.sidebar-nav {
+.sidebarNav {
   padding: 1rem 0;
 }
 
-.nav-item {
+.navItem {
   width: 100%;
   display: flex;
   align-items: center;
@@ -60,50 +60,55 @@
   text-align: left;
 }
 
-.nav-item:hover {
+.navItem:hover {
   background: #1f2937;
   color: white;
 }
 
 /* Main Content */
-.main-content {
+.mainContent {
   flex: 1;
   margin-left: 280px;
   padding: 2rem;
   overflow-y: auto;
 }
 
-.result-container {
+.resultContainer {
   max-width: 1200px;
   margin: 0 auto;
 }
 
 /* Result Header */
-.result-header {
+.resultHeader {
   margin-bottom: 2rem;
 }
 
-.result-header h1 {
+.resultHeader h1 {
   font-size: 2.5rem;
   color: #000000;
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
 
-.result-header .subtitle {
+.resultHeader .subtitle {
+  font-size: 1.1rem;
+  color: #6b7280;
+}
+
+.subtitle {
   font-size: 1.1rem;
   color: #6b7280;
 }
 
 /* Cards Grid */
-.cards-grid {
+.cardsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
-.card-item {
+.cardItem {
   background: white;
   border-radius: 12px;
   overflow: hidden;
@@ -113,12 +118,12 @@
   flex-direction: column;
 }
 
-.card-item:hover {
+.cardItem:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
 
-.card-image-container {
+.cardImageContainer {
   background: linear-gradient(135deg, #000000 0%, #333333 100%);
   height: 150px;
   display: flex;
@@ -127,7 +132,7 @@
   flex-shrink: 0;
 }
 
-.card-image-placeholder {
+.cardImagePlaceholder {
   width: 100%;
   height: 100%;
   display: flex;
@@ -135,18 +140,18 @@
   justify-content: center;
 }
 
-.card-icon {
+.cardIcon {
   font-size: 4rem;
 }
 
-.card-info {
+.cardInfo {
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-.card-info h2 {
+.cardInfo h2 {
   font-size: 1.25rem;
   color: #000000;
   margin-bottom: 0.4rem;
@@ -159,7 +164,7 @@
   margin-bottom: 0.75rem;
 }
 
-.annual-fee {
+.annualFee {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -169,13 +174,25 @@
   margin-bottom: 0.75rem;
 }
 
-.annual-fee .label {
+.annualFee .label {
   font-size: 0.85rem;
   color: #4b5563;
   font-weight: 600;
 }
 
-.annual-fee .value {
+.annualFee .value {
+  font-size: 1rem;
+  color: #000000;
+  font-weight: 700;
+}
+
+.label {
+  font-size: 0.85rem;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+.value {
   font-size: 1rem;
   color: #000000;
   font-weight: 700;
@@ -215,7 +232,7 @@
   font-weight: bold;
 }
 
-.apply-btn {
+.applyBtn {
   display: block;
   width: 100%;
   padding: 0.75rem;
@@ -231,52 +248,57 @@
   margin-top: auto;
 }
 
-.apply-btn:hover {
+.applyBtn:hover {
   background: #1f2937;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Chat Section */
-.chat-section {
+.chatSection {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-.chat-section h2 {
+.chatSection h2 {
   font-size: 1.5rem;
   color: #000000;
   margin-bottom: 0.3rem;
   font-weight: 700;
 }
 
-.chat-subtitle {
+.chatSubtitle {
   font-size: 0.95rem;
   color: #6b7280;
   margin-bottom: 1rem;
 }
 
-.chat-container {
+.chatContainer {
   border: 2px solid #e5e7eb;
   border-radius: 12px;
   overflow: hidden;
 }
 
-.chat-container.compact {
+.chatContainer.compact {
   border: none;
   background: transparent;
 }
 
-.chat-container.compact .chat-input-container {
+.chatContainer.compact .chatInputContainer {
   border: 2px solid #e5e7eb;
   border-radius: 12px;
   background: white;
   padding: 1rem;
 }
 
-.chat-messages {
+.compact {
+  border: none;
+  background: transparent;
+}
+
+.chatMessages {
   height: 250px;
   overflow-y: auto;
   padding: 1rem;
@@ -300,7 +322,19 @@
   justify-content: flex-start;
 }
 
-.message-content {
+.user {
+  justify-content: flex-end;
+}
+
+.system {
+  justify-content: flex-start;
+}
+
+.assistant {
+  justify-content: flex-start;
+}
+
+.messageContent {
   max-width: 70%;
   padding: 0.75rem 1rem;
   border-radius: 12px;
@@ -308,24 +342,41 @@
   line-height: 1.5;
 }
 
-.message.user .message-content {
+.message.user .messageContent {
   background: #000000;
   color: white;
 }
 
-.message.system .message-content {
+.message.system .messageContent {
   background: #e5e7eb;
   color: #4b5563;
   font-style: italic;
 }
 
-.message.assistant .message-content {
+.message.assistant .messageContent {
   background: white;
   color: #1f2937;
   border: 1px solid #e5e7eb;
 }
 
-.chat-input-container {
+.user .messageContent {
+  background: #000000;
+  color: white;
+}
+
+.system .messageContent {
+  background: #e5e7eb;
+  color: #4b5563;
+  font-style: italic;
+}
+
+.assistant .messageContent {
+  background: white;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
+}
+
+.chatInputContainer {
   display: flex;
   gap: 1rem;
   padding: 1rem;
@@ -333,7 +384,7 @@
   border-top: 2px solid #e5e7eb;
 }
 
-.chat-input {
+.chatInput {
   flex: 1;
   padding: 0.75rem;
   border: 2px solid #e5e7eb;
@@ -344,16 +395,16 @@
   transition: border-color 0.3s ease;
 }
 
-.chat-input:focus {
+.chatInput:focus {
   outline: none;
   border-color: #000000;
 }
 
-.chat-input::placeholder {
+.chatInput::placeholder {
   color: #9ca3af;
 }
 
-.send-btn {
+.sendBtn {
   padding: 0.75rem 1.75rem;
   background: #000000;
   color: white;
@@ -367,24 +418,24 @@
   align-self: flex-end;
 }
 
-.send-btn:hover:not(:disabled) {
+.sendBtn:hover:not(:disabled) {
   background: #1f2937;
   transform: translateY(-2px);
 }
 
-.send-btn:disabled {
+.sendBtn:disabled {
   background: #9ca3af;
   cursor: not-allowed;
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-  .cards-grid {
+  .cardsGrid {
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
   }
 
-  .card-info h2 {
+  .cardInfo h2 {
     font-size: 1.1rem;
   }
 
@@ -394,7 +445,7 @@
 }
 
 @media (max-width: 1024px) {
-  .cards-grid {
+  .cardsGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -404,36 +455,36 @@
     width: 200px;
   }
 
-  .main-content {
+  .mainContent {
     margin-left: 200px;
     padding: 1.5rem;
   }
 
-  .result-header h1 {
+  .resultHeader h1 {
     font-size: 2rem;
   }
 
-  .cards-grid {
+  .cardsGrid {
     grid-template-columns: 1fr;
   }
 
-  .card-item {
+  .cardItem {
     margin-bottom: 1rem;
   }
 
-  .chat-messages {
+  .chatMessages {
     height: 200px;
   }
 
-  .message-content {
+  .messageContent {
     max-width: 85%;
   }
 
-  .chat-input-container {
+  .chatInputContainer {
     flex-direction: column;
   }
 
-  .send-btn {
+  .sendBtn {
     width: 100%;
   }
 }

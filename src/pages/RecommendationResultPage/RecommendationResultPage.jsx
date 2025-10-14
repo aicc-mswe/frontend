@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './RecommendationResultPage.css';
+import styles from './RecommendationResultPage.module.css';
 
 function RecommendationResultPage() {
   const navigate = useNavigate();
@@ -86,53 +86,53 @@ function RecommendationResultPage() {
   };
 
   return (
-    <div className="result-page">
+    <div className={styles.resultPage}>
       {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="sidebar-header">
+      <aside className={styles.sidebar}>
+        <div className={styles.sidebarHeader}>
           <h2>AICC</h2>
         </div>
-        <nav className="sidebar-nav">
+        <nav className={styles.sidebarNav}>
           <button
-            className="nav-item"
+            className={styles.navItem}
             onClick={() => navigate('/app')}
           >
             <span>New Recommendation</span>
           </button>
-          <button className="nav-item">
+          <button className={styles.navItem}>
             <span>Recommendation History</span>
           </button>
-          <button className="nav-item">
+          <button className={styles.navItem}>
             <span>Chat History</span>
           </button>
         </nav>
       </aside>
 
       {/* Main Content */}
-      <main className="main-content">
-        <div className="result-container">
-          <div className="result-header">
+      <main className={styles.mainContent}>
+        <div className={styles.resultContainer}>
+          <div className={styles.resultHeader}>
             <h1>Your Recommended Credit Cards</h1>
-            <p className="subtitle">Based on your preferences, here are our top 3 recommendations</p>
+            <p className={styles.subtitle}>Based on your preferences, here are our top 3 recommendations</p>
           </div>
 
           {/* Card Recommendations */}
-          <div className="cards-grid">
+          <div className={styles.cardsGrid}>
             {recommendedCards.map((card) => (
-              <div key={card.id} className="card-item">
-                <div className="card-image-container">
-                  <div className="card-image-placeholder">
-                    <span className="card-icon">💳</span>
+              <div key={card.id} className={styles.cardItem}>
+                <div className={styles.cardImageContainer}>
+                  <div className={styles.cardImagePlaceholder}>
+                    <span className={styles.cardIcon}>💳</span>
                   </div>
                 </div>
-                <div className="card-info">
+                <div className={styles.cardInfo}>
                   <h2>{card.name}</h2>
-                  <p className="issuer">{card.issuer} • {card.cardType}</p>
-                  <div className="annual-fee">
-                    <span className="label">Annual Fee:</span>
-                    <span className="value">{card.annualFee}</span>
+                  <p className={styles.issuer}>{card.issuer} • {card.cardType}</p>
+                  <div className={styles.annualFee}>
+                    <span className={styles.label}>Annual Fee:</span>
+                    <span className={styles.value}>{card.annualFee}</span>
                   </div>
-                  <div className="highlights">
+                  <div className={styles.highlights}>
                     <h3>Key Features</h3>
                     <ul>
                       {card.highlights.map((highlight, index) => (
@@ -144,7 +144,7 @@ function RecommendationResultPage() {
                     href={card.applyLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="apply-btn"
+                    className={styles.applyBtn}
                   >
                     Apply Now
                   </a>
@@ -154,16 +154,16 @@ function RecommendationResultPage() {
           </div>
 
           {/* Chat Section */}
-          <div className="chat-section">
+          <div className={styles.chatSection}>
             <h2>Have Questions About These Cards?</h2>
-            <p className="chat-subtitle">Ask me anything about the recommended credit cards</p>
+            <p className={styles.chatSubtitle}>Ask me anything about the recommended credit cards</p>
             
-            <div className={`chat-container ${chatMessages.length === 0 ? 'compact' : ''}`}>
+            <div className={`${styles.chatContainer} ${chatMessages.length === 0 ? styles.compact : ''}`}>
               {chatMessages.length > 0 && (
-                <div className="chat-messages">
+                <div className={styles.chatMessages}>
                   {chatMessages.map((message, index) => (
-                    <div key={index} className={`message ${message.type}`}>
-                      <div className="message-content">
+                    <div key={index} className={`${styles.message} ${styles[message.type]}`}>
+                      <div className={styles.messageContent}>
                         {message.content}
                       </div>
                     </div>
@@ -171,9 +171,9 @@ function RecommendationResultPage() {
                 </div>
               )}
               
-              <div className="chat-input-container">
+              <div className={styles.chatInputContainer}>
                 <textarea
-                  className="chat-input"
+                  className={styles.chatInput}
                   placeholder="Ask a question about these credit cards..."
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
@@ -181,7 +181,7 @@ function RecommendationResultPage() {
                   rows={2}
                 />
                 <button
-                  className="send-btn"
+                  className={styles.sendBtn}
                   onClick={handleSendMessage}
                   disabled={inputMessage.trim() === ''}
                 >

@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-.info-page {
+.infoPage {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -27,7 +27,7 @@
   padding: 1rem 0;
 }
 
-.nav-container {
+.navContainer {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
@@ -49,13 +49,13 @@
   opacity: 0.7;
 }
 
-.nav-links {
+.navLinks {
   display: flex;
   list-style: none;
   gap: 2.5rem;
 }
 
-.nav-links a {
+.navLinks a {
   text-decoration: none;
   color: #4b5563;
   font-weight: 500;
@@ -64,12 +64,12 @@
   cursor: pointer;
 }
 
-.nav-links a:hover {
+.navLinks a:hover {
   color: #000000;
 }
 
 /* Content Section */
-.content-section {
+.contentSection {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -78,31 +78,31 @@
   background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
 }
 
-.content-container {
+.contentContainer {
   max-width: 800px;
   width: 100%;
   text-align: center;
 }
 
-.content-container h1 {
+.contentContainer h1 {
   font-size: 3rem;
   margin-bottom: 2rem;
   color: #000000;
   font-weight: 700;
 }
 
-.content-text {
+.contentText {
   margin-bottom: 3rem;
 }
 
-.content-text p {
+.contentText p {
   font-size: 1.2rem;
   line-height: 1.8;
   color: #4b5563;
   margin-bottom: 1.5rem;
 }
 
-.contact-details {
+.contactDetails {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -110,20 +110,20 @@
   text-align: center;
 }
 
-.contact-item h3 {
+.contactItem h3 {
   font-size: 1.3rem;
   color: #000000;
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
 
-.contact-item p {
+.contactItem p {
   font-size: 1.1rem;
   color: #4b5563;
   margin: 0;
 }
 
-.back-btn {
+.backBtn {
   background: #000000;
   color: #ffffff;
   border: none;
@@ -136,27 +136,27 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-.back-btn:hover {
+.backBtn:hover {
   background: #1f2937;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-.back-btn:active {
+.backBtn:active {
   transform: translateY(0);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .content-container h1 {
+  .contentContainer h1 {
     font-size: 2.2rem;
   }
 
-  .content-text p {
+  .contentText p {
     font-size: 1rem;
   }
 
-  .nav-links {
+  .navLinks {
     gap: 1.5rem;
   }
   
@@ -164,15 +164,15 @@
     font-size: 1.5rem;
   }
 
-  .contact-details {
+  .contactDetails {
     gap: 1.5rem;
   }
 
-  .contact-item h3 {
+  .contactItem h3 {
     font-size: 1.1rem;
   }
 
-  .contact-item p {
+  .contactItem p {
     font-size: 1rem;
   }
 }
