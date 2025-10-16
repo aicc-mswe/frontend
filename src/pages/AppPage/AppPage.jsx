@@ -57,15 +57,6 @@ function AppPage() {
   };
 
   const renderContent = () => {
-    if (activeMenu === 'history') {
-      return (
-        <div className={styles.menuContent}>
-          <h2>Recommendation History</h2>
-          <p className={styles.comingSoon}>No recommendation history yet.</p>
-        </div>
-      );
-    }
-
     if (activeMenu === 'chat') {
       return (
         <div className={styles.menuContent}>
@@ -187,8 +178,8 @@ function AppPage() {
             <span>New Recommendation</span>
           </button>
           <button
-            className={`${styles.navItem} ${activeMenu === 'history' ? styles.active : ''}`}
-            onClick={() => setActiveMenu('history')}
+            className={styles.navItem}
+            onClick={() => navigate('/recommendation-history')}
           >
             <span>Recommendation History</span>
           </button>

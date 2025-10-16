@@ -4,6 +4,7 @@ import AboutPage from './pages/AboutPage/AboutPage';
 import TeamPage from './pages/TeamPage/TeamPage';
 import ContactPage from './pages/ContactPage/ContactPage';
 import AppPage from './pages/AppPage/AppPage';
+import RecommendationHistoryPage from './pages/RecommendationHistoryPage/RecommendationHistoryPage';
 import RecommendationResultPage from './pages/RecommendationResultPage/RecommendationResultPage';
 import './App.css'
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/team" element={<TeamPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/app" element={<AppPage />} />
+        <Route path="/recommendation-history" element={<RecommendationHistoryPage />} />
         <Route path="/results" element={<RecommendationResultPage />} />
       </Routes>
     </Router>

@@ -1,3 +1,9 @@
+.summaryTitle {
+  font-size: 1.25rem;
+  color: #000000;
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+}
 * {
   margin: 0;
   padding: 0;
@@ -65,6 +71,70 @@
   color: white;
 }
 
+.navItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.historySubmenu {
+  background: #111111;
+  border-left: 3px solid #333333;
+  margin-left: 1rem;
+}
+
+.historyItem {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #222222;
+}
+
+.historyItem:hover {
+  background: #1a1a1a;
+  color: white;
+}
+
+.historyItemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.historyTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+}
+
+.historyDate {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.historySummary {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.historyCards {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
 /* Main Content */
 .mainContent {
   flex: 1;
@@ -100,36 +170,158 @@
   color: #6b7280;
 }
 
-/* Cards Grid */
-.cardsGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+/* Summary Section */
+.summarySection {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
   margin-bottom: 2rem;
+  border: 1px solid #e5e7eb;
 }
 
-.cardItem {
-  background: white;
+.summaryText {
+  font-size: 1rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Cards Table */
+.cardsTableContainer {
+  background: #ffffff;
   border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e5e7eb;
+}
+
+.tableHeader {
+  margin-bottom: 1.5rem;
+}
+
+.tableHeader h2 {
+  font-size: 1.2rem;
+  color: #000000;
+  font-weight: 600;
+  margin: 0;
+}
+
+.cardsTable {
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
 }
 
-.cardItem:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+/* Horizontal comparison table (CSS Grid) */
+.comparisonTable {
+  display: grid;
+  grid-auto-rows: auto;
+  border-top: 1px solid #e5e7eb;
+  border-left: 1px solid #e5e7eb;
+}
+
+.headerCell,
+.featureCell,
+.cell {
+  padding: 1rem;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.headerCell {
+  font-weight: 700;
+  color: #000000;
+}
+
+.featureCell {
+  font-weight: 600;
+  color: #4b5563;
+  background: #f9fafb;
+}
+
+.stickyCol {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+.cardHeaderCompact {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cardThumb {
+  width: 48px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+}
+
+.cardNameCompact {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.cardBankCompact {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.cardImageLarge {
+  width: 140px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding-left: 1rem;
+  position: relative;
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #000000;
+}
+
+/* Legacy card styles kept for reference but not used by new layout */
+
+.cardImageColumn {
+  flex-shrink: 0;
+  width: 200px;
 }
 
 .cardImageContainer {
   background: linear-gradient(135deg, #000000 0%, #333333 100%);
-  height: 150px;
+  height: 120px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .cardImagePlaceholder {
@@ -141,90 +333,108 @@
 }
 
 .cardIcon {
-  font-size: 4rem;
+  font-size: 3rem;
+  color: white;
 }
 
-.cardInfo {
-  padding: 1.25rem;
+.cardInfoColumn {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  gap: 1rem;
 }
 
-.cardInfo h2 {
-  font-size: 1.25rem;
+.cardHeader {
+  border-bottom: 1px solid #333333;
+  padding-bottom: 1rem;
+}
+
+.cardName {
+  font-size: 1.3rem;
   color: #000000;
-  margin-bottom: 0.4rem;
+  margin: 0 0 0.5rem 0;
   font-weight: 700;
 }
 
-.issuer {
-  font-size: 0.85rem;
+.cardBank {
+  font-size: 0.9rem;
   color: #6b7280;
-  margin-bottom: 0.75rem;
+  margin: 0;
 }
 
-.annualFee {
+.cardDetails {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.6rem;
+  gap: 2rem;
+}
+
+.detailRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detailLabel {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.detailValue {
+  font-size: 0.9rem;
+  color: #000000;
+  font-weight: 500;
+}
+
+.cardDescription {
   background: #f3f4f6;
+  padding: 1rem;
   border-radius: 8px;
-  margin-bottom: 0.75rem;
+  border-left: 3px solid #000000;
 }
 
-.annualFee .label {
-  font-size: 0.85rem;
+.cardDescription p {
+  font-size: 0.9rem;
   color: #4b5563;
-  font-weight: 600;
+  line-height: 1.5;
+  margin: 0;
 }
 
-.annualFee .value {
-  font-size: 1rem;
-  color: #000000;
-  font-weight: 700;
+.cardProsCons {
+  display: flex;
+  gap: 2rem;
 }
 
-.label {
-  font-size: 0.85rem;
-  color: #4b5563;
-  font-weight: 600;
-}
-
-.value {
-  font-size: 1rem;
-  color: #000000;
-  font-weight: 700;
-}
-
-.highlights {
-  margin-bottom: 1rem;
+.prosSection,
+.consSection {
   flex: 1;
 }
 
-.highlights h3 {
-  font-size: 1rem;
-  color: #000000;
-  margin-bottom: 0.5rem;
+.prosSection h4,
+.consSection h4 {
+  font-size: 0.9rem;
+  color: white;
+  margin: 0 0 0.5rem 0;
   font-weight: 600;
 }
 
-.highlights ul {
+.prosSection ul,
+.consSection ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.highlights li {
+.prosSection li,
+.consSection li {
   font-size: 0.8rem;
-  color: #4b5563;
-  padding: 0.35rem 0;
-  padding-left: 1.25rem;
+  color: #9ca3af;
+  padding: 0.25rem 0;
+  padding-left: 1rem;
   position: relative;
   line-height: 1.4;
 }
 
-.highlights li::before {
+.prosSection li::before {
   content: '✓';
   position: absolute;
   left: 0;
@@ -232,77 +442,54 @@
   font-weight: bold;
 }
 
+.consSection li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #000000;
+  font-weight: bold;
+}
+
 .applyBtn {
-  display: block;
-  width: 100%;
-  padding: 0.75rem;
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
   background: #000000;
   color: white;
   text-align: center;
   text-decoration: none;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  margin-top: auto;
 }
 
 .applyBtn:hover {
   background: #1f2937;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Chat Section */
 .chatSection {
-  background: white;
+  background: #ffffff;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-}
-
-.chatSection h2 {
-  font-size: 1.5rem;
-  color: #000000;
-  margin-bottom: 0.3rem;
-  font-weight: 700;
-}
-
-.chatSubtitle {
-  font-size: 0.95rem;
-  color: #6b7280;
-  margin-bottom: 1rem;
+  margin-top: 2rem;
+  border: 1px solid #e5e7eb;
 }
 
 .chatContainer {
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.chatContainer.compact {
-  border: none;
-  background: transparent;
-}
-
-.chatContainer.compact .chatInputContainer {
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  background: white;
-  padding: 1rem;
-}
-
-.compact {
-  border: none;
-  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .chatMessages {
-  height: 250px;
+  height: 200px;
   overflow-y: auto;
   padding: 1rem;
   background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
 }
 
 .message {
@@ -314,23 +501,7 @@
   justify-content: flex-end;
 }
 
-.message.system {
-  justify-content: flex-start;
-}
-
 .message.assistant {
-  justify-content: flex-start;
-}
-
-.user {
-  justify-content: flex-end;
-}
-
-.system {
-  justify-content: flex-start;
-}
-
-.assistant {
   justify-content: flex-start;
 }
 
@@ -347,31 +518,8 @@
   color: white;
 }
 
-.message.system .messageContent {
-  background: #e5e7eb;
-  color: #4b5563;
-  font-style: italic;
-}
-
 .message.assistant .messageContent {
-  background: white;
-  color: #1f2937;
-  border: 1px solid #e5e7eb;
-}
-
-.user .messageContent {
-  background: #000000;
-  color: white;
-}
-
-.system .messageContent {
-  background: #e5e7eb;
-  color: #4b5563;
-  font-style: italic;
-}
-
-.assistant .messageContent {
-  background: white;
+  background: #ffffff;
   color: #1f2937;
   border: 1px solid #e5e7eb;
 }
@@ -380,8 +528,9 @@
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  background: white;
-  border-top: 2px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
 }
 
 .chatInput {
@@ -404,49 +553,43 @@
   color: #9ca3af;
 }
 
-.sendBtn {
-  padding: 0.75rem 1.75rem;
-  background: #000000;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  align-self: flex-end;
-}
+/* sendBtn removed: sending via Enter key */
 
-.sendBtn:hover:not(:disabled) {
-  background: #1f2937;
-  transform: translateY(-2px);
-}
 
-.sendBtn:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
-}
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-  .cardsGrid {
-    grid-template-columns: repeat(3, 1fr);
+  .cardRow {
+    flex-direction: column;
     gap: 1rem;
   }
 
-  .cardInfo h2 {
-    font-size: 1.1rem;
+  .cardImageColumn {
+    width: 100%;
   }
 
-  .highlights li {
-    font-size: 0.75rem;
+  .cardImageContainer {
+    height: 150px;
+  }
+
+  .cardDetails {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .cardProsCons {
+    flex-direction: column;
+    gap: 1rem;
   }
 }
 
 @media (max-width: 1024px) {
-  .cardsGrid {
-    grid-template-columns: repeat(2, 1fr);
+  .cardsTableContainer {
+    padding: 1rem;
+  }
+
+  .cardRow {
+    padding: 1rem;
   }
 }
 
@@ -464,16 +607,41 @@
     font-size: 2rem;
   }
 
-  .cardsGrid {
-    grid-template-columns: 1fr;
+  .resultHeader .subtitle {
+    font-size: 1rem;
   }
 
-  .cardItem {
-    margin-bottom: 1rem;
+  .summarySection {
+    padding: 1rem;
+  }
+
+  .summaryText {
+    font-size: 0.9rem;
+  }
+
+  .cardsTableContainer {
+    padding: 1rem;
+  }
+
+  .cardRow {
+    padding: 1rem;
+  }
+
+  .cardName {
+    font-size: 1.1rem;
+  }
+
+  .cardDescription p {
+    font-size: 0.85rem;
+  }
+
+  .prosSection li,
+  .consSection li {
+    font-size: 0.75rem;
   }
 
   .chatMessages {
-    height: 200px;
+    height: 150px;
   }
 
   .messageContent {
@@ -482,9 +650,14 @@
 
   .chatInputContainer {
     flex-direction: column;
+    gap: 0.5rem;
   }
 
-  .sendBtn {
+  .askButton {
     width: 100%;
+  }
+
+  .voiceIcons {
+    justify-content: center;
   }
 }
