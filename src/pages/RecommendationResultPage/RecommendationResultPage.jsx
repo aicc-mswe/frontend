@@ -1,55 +1,126 @@
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { checkRecommendationStatus } from '../../services/api';
 import styles from './RecommendationResultPage.module.css';
 
 function RecommendationResultPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Mock data for recommended cards
-  const recommendedCards = [
-    {
-      id: 1,
-      name: 'Chase Sapphire Preferred',
-      bankName: 'Chase',
-      image: 'https://www.uscreditcardguide.com/wp-content/uploads/csp-e1629138224670.png',
-      fee: '$95',
-      cardType: 'VISA',
-      rewards: '5x travel, 3x dining, 2x other travel',
-      description: 'Perfect for travelers who want flexibility with points redemption and excellent travel protections. Great for those who spend heavily on dining and travel.',
-      pros: ['Flexible point redemption', 'Strong travel protections', 'No foreign transaction fees'],
-      cons: ['Higher annual fee', 'Requires good credit score'],
-      applyLink: 'https://creditcards.chase.com/rewards-credit-cards/sapphire/preferred'
-    },
-    {
-      id: 2,
-      name: 'American Express Gold Card',
-      bankName: 'American Express',
-      image: 'https://icm.aexp-static.com/Internet/Acquisition/US_en/AppContent/OneSite/category/cardarts/gold-card.png',
-      fee: '$250',
-      cardType: 'American Express',
-      rewards: '4x restaurants, 4x groceries, 3x flights',
-      description: 'Ideal for food enthusiasts and frequent grocery shoppers. Offers excellent dining rewards and valuable annual credits.',
-      pros: ['High dining rewards', 'Valuable annual credits', 'Premium benefits'],
-      cons: ['Higher annual fee', 'Limited acceptance internationally'],
-      applyLink: 'https://www.americanexpress.com/us/credit-cards/card/gold-card/'
-    },
-    {
-      id: 3,
-      name: 'Capital One Venture Rewards',
-      bankName: 'Capital One',
-      image: 'https://ecm.capitalone.com/WCM/card/products/venture-card-art.png',
-      fee: '$95',
-      cardType: 'VISA',
-      rewards: '2x miles on all purchases',
-      description: 'Simple and straightforward travel rewards card with consistent earning on all purchases. Great for those who want simplicity.',
-      pros: ['Simple earning structure', 'No foreign transaction fees', 'Travel credits'],
-      cons: ['Lower earning rate', 'Limited transfer partners'],
-      applyLink: 'https://www.capitalone.com/credit-cards/venture/'
-    }
-  ];
+  // State management
+  const [isProcessing, setIsProcessing] = useState(location?.state?.isProcessing || false);
+  const [recommendationData, setRecommendationData] = useState(null);
+  const [error, setError] = useState(null);
+  const [pollCount, setPollCount] = useState(0);
 
-  // Summary text explaining the recommendations
-  const recommendationSummary = `Based on your spending patterns and preferences, we've identified three credit cards that best match your financial goals. The Chase Sapphire Preferred offers excellent travel flexibility with strong dining rewards, making it ideal for frequent travelers. The American Express Gold Card maximizes rewards for dining and grocery spending, perfect for food enthusiasts. The Capital One Venture Rewards provides simple, consistent earning on all purchases with valuable travel benefits. Each card offers unique advantages: Sapphire Preferred for travel flexibility, Gold Card for dining maximization, and Venture for simplicity and broad acceptance.`;
+  // Get jobId or direct data from location state
+  const jobId = location?.state?.jobId;
+  const directData = location?.state?.recommendationData;
+
+  // Polling logic
+  useEffect(() => {
+    // If we have direct data (sync mode), use it immediately
+    if (directData) {
+      setRecommendationData(directData);
+      setIsProcessing(false);
+      return;
+    }
+
+    // If we don't have a jobId, something went wrong
+    if (!jobId) {
+      setError('No job ID provided. Please try generating recommendations again.');
+      setIsProcessing(false);
+      return;
+    }
+
+    // Start polling for job status
+    let pollInterval;
+    let timeoutId;
+
+    const pollJobStatus = async () => {
+      try {
+        console.log(`Polling job status (attempt ${pollCount + 1})...`);
+        const result = await checkRecommendationStatus(jobId);
+        
+        console.log('Poll result:', result);
+
+        if (result.status === 'completed' || result.success) {
+          // Job completed successfully
+          setRecommendationData(result);
+          setIsProcessing(false);
+          clearInterval(pollInterval);
+          clearTimeout(timeoutId);
+          console.log('Job completed successfully');
+        } else if (result.status === 'failed' || result.error) {
+          // Job failed
+          setError(result.error || result.message || 'Failed to generate recommendations');
+          setIsProcessing(false);
+          clearInterval(pollInterval);
+          clearTimeout(timeoutId);
+          console.error('Job failed:', result.error);
+        } else if (result.status === 'processing') {
+          // Still processing, continue polling
+          setPollCount(prev => prev + 1);
+        }
+      } catch (err) {
+        console.error('Error polling job status:', err);
+        // Don't set error on individual poll failures, keep trying
+        setPollCount(prev => prev + 1);
+      }
+    };
+
+    // Initial poll
+    pollJobStatus();
+
+    // Set up interval for subsequent polls (every 3 seconds)
+    pollInterval = setInterval(pollJobStatus, 3000);
+
+    // Set timeout to stop polling after 2 minutes
+    timeoutId = setTimeout(() => {
+      clearInterval(pollInterval);
+      if (isProcessing) {
+        setError('Request timeout. The process is taking longer than expected. Please try again.');
+        setIsProcessing(false);
+      }
+    }, 120000); // 2 minutes
+
+    // Cleanup on unmount
+    return () => {
+      clearInterval(pollInterval);
+      clearTimeout(timeoutId);
+    };
+  }, [jobId, directData]);
+
+  // Extract data from API response structure
+  const apiData = recommendationData?.data;
+  
+  // Use API returned card data from recommendations array
+  const recommendedCards = apiData?.recommendations || [];
+
+  // Use API returned summary or generate from filters
+  const generateSummaryFromFilters = () => {
+    if (!apiData?.filters) return 'Based on your preferences, we\'ve identified the best credit cards that match your financial goals.';
+    
+    const { cardTypes, rewardTypes, annualFeeRange } = apiData.filters;
+    const cardTypesText = cardTypes?.length > 0 ? cardTypes.join(', ') : 'any card type';
+    const rewardTypesText = rewardTypes?.length > 0 ? rewardTypes.join(', ') : 'various rewards';
+    
+    return `Based on your preferences for ${cardTypesText} with ${rewardTypesText} rewards, we've identified ${apiData.count || 0} credit cards that best match your financial goals.`;
+  };
+  
+  const recommendationSummary = apiData?.summary || generateSummaryFromFilters();
+  
+  // Generate title from filters
+  const generateTitle = () => {
+    if (!apiData?.filters) return 'Credit Card Recommendations';
+    const { rewardTypes } = apiData.filters;
+    if (rewardTypes?.length > 0) {
+      return rewardTypes.join(' & ') + ' Focus';
+    }
+    return 'Credit Card Recommendations';
+  };
+  
+  const resultTitle = location?.state?.historyData?.title || generateTitle();
 
   // Helper to render list cells
   const renderList = (items) => (
@@ -60,7 +131,43 @@ function RecommendationResultPage() {
     </ul>
   );
 
-  const resultTitle = location?.state?.historyData?.title || 'Travel & Dining Focus';
+  // Render processing state
+  const renderProcessingState = () => (
+    <div className={styles.processingContainer}>
+      <div className={styles.processingContent}>
+        <div className={styles.spinner}></div>
+        <h2>Analyzing Your Preferences</h2>
+        <p className={styles.processingText}>
+          Our AI is finding the best credit cards for you...
+        </p>
+        <p className={styles.processingEstimate}>
+          This usually takes 15-20 seconds
+        </p>
+        <div className={styles.progressInfo}>
+          <span className={styles.pollIndicator}>
+            Checking status... ({pollCount} {pollCount === 1 ? 'check' : 'checks'})
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Render error state
+  const renderErrorState = () => (
+    <div className={styles.errorContainer}>
+      <div className={styles.errorContent}>
+        <span className={styles.errorIcon}>⚠️</span>
+        <h2>Something Went Wrong</h2>
+        <p className={styles.errorText}>{error}</p>
+        <button 
+          className={styles.retryButton}
+          onClick={() => navigate('/app')}
+        >
+          Try Again
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <div className={styles.resultPage}>
@@ -90,7 +197,15 @@ function RecommendationResultPage() {
 
       {/* Main Content */}
       <main className={styles.mainContent}>
-        <div className={styles.resultContainer}>
+        {/* Show processing state */}
+        {isProcessing && renderProcessingState()}
+        
+        {/* Show error state */}
+        {error && !isProcessing && renderErrorState()}
+        
+        {/* Show results when ready */}
+        {!isProcessing && !error && recommendedCards.length > 0 && (
+          <div className={styles.resultContainer}>
           <div className={styles.resultHeader}>
             <h1>Recommended Credit Cards</h1>
             <p className={styles.subtitle}>{resultTitle}</p>
@@ -173,7 +288,8 @@ function RecommendationResultPage() {
               ))}
             </div>
           </div>
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );

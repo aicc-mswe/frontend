@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { generateRecommendation } from '../../services/api';
 import styles from './AppPage.module.css';
 
 function AppPage() {
@@ -10,6 +11,8 @@ function AppPage() {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [otherDescription, setOtherDescription] = useState('');
   const [activeMenu, setActiveMenu] = useState('recommend');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const cardTypes = ['Any', 'VISA', 'Mastercard', 'American Express', 'Discover'];
   const rewardTypes = ['Any', 'Hotel', 'Flights', 'Cash Back', 'Dining', 'Gas', 'Groceries'];
@@ -44,16 +47,73 @@ function AppPage() {
     }
   };
 
-  const handleGenerateRecommendation = () => {
-    console.log({
-      cardTypes: selectedCardTypes,
-      rewardTypes: selectedRewardTypes,
-      annualFeeRange,
-      uploadedFile: uploadedFile?.name,
-      otherDescription
-    });
-    // Navigate to results page
-    navigate('/results');
+  const handleGenerateRecommendation = async () => {
+    // Clear previous errors
+    setError(null);
+    
+    // Validate at least some input
+    if (selectedCardTypes.length === 0 && 
+        selectedRewardTypes.length === 0 && 
+        !annualFeeRange && 
+        !uploadedFile && 
+        !otherDescription.trim()) {
+      setError('Please select at least one preference or provide additional requirements.');
+      return;
+    }
+
+    setIsLoading(true);
+    
+    try {
+      // Prepare API request data
+      const requestData = {
+        cardTypes: selectedCardTypes,
+        rewardTypes: selectedRewardTypes,
+        annualFeeRange: annualFeeRange,
+        statementFile: uploadedFile,
+        additionalRequirements: otherDescription
+      };
+
+      console.log('Sending recommendation request:', {
+        cardTypes: selectedCardTypes,
+        rewardTypes: selectedRewardTypes,
+        annualFeeRange,
+        uploadedFile: uploadedFile?.name,
+        additionalRequirements: otherDescription
+      });
+
+      // Submit job to API
+      const result = await generateRecommendation(requestData);
+      
+      console.log('Job submission result:', result);
+      
+      // Check if we got a jobId (async mode) or direct data (sync mode)
+      if (result.jobId) {
+        // Async mode: Navigate to results page with jobId for polling
+        navigate('/results', { 
+          state: { 
+            jobId: result.jobId,
+            requestFilters: requestData,
+            isProcessing: true
+          } 
+        });
+      } else if (result.data) {
+        // Sync mode (backward compatible): Navigate with direct data
+        navigate('/results', { 
+          state: { 
+            recommendationData: result,
+            requestFilters: requestData,
+            isProcessing: false
+          } 
+        });
+      } else {
+        throw new Error('Invalid API response format');
+      }
+    } catch (err) {
+      console.error('Failed to generate recommendation:', err);
+      setError(err.message || 'Failed to generate recommendation. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderContent = () => {
@@ -70,6 +130,14 @@ function AppPage() {
       <div className={styles.recommendationForm}>
         <h1>Credit Card Recommendation</h1>
         <p className={styles.subtitle}>Find your perfect credit card by selecting your preferences</p>
+
+        {/* Error Message */}
+        {error && (
+          <div className={styles.errorMessage}>
+            <span className={styles.errorIcon}>⚠️</span>
+            <span>{error}</span>
+          </div>
+        )}
 
         {/* Card Type Selection */}
         <div className={styles.formSection}>
@@ -156,8 +224,19 @@ function AppPage() {
         </div>
 
         {/* Generate Button */}
-        <button className={styles.generateBtn} onClick={handleGenerateRecommendation}>
-          Generate Recommendation
+        <button 
+          className={styles.generateBtn} 
+          onClick={handleGenerateRecommendation}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <span className={styles.spinner}></span>
+              Generating...
+            </>
+          ) : (
+            'Generate Recommendation'
+          )}
         </button>
       </div>
     );
