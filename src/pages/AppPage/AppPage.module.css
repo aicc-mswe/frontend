@@ -290,16 +290,61 @@
   transition: all 0.3s ease;
   margin-top: 1rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.generateBtn:hover {
+.generateBtn:hover:not(:disabled) {
   background: #1f2937;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-.generateBtn:active {
+.generateBtn:active:not(:disabled) {
   transform: translateY(0);
+}
+
+.generateBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ffffff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error Message */
+.errorMessage {
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #c00;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.errorIcon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
 }
 
 /* Responsive Design */
