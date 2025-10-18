@@ -1,12 +1,9 @@
-import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './RecommendationResultPage.module.css';
 
 function RecommendationResultPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [chatMessages, setChatMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
 
   // Mock data for recommended cards
   const recommendedCards = [
@@ -50,32 +47,6 @@ function RecommendationResultPage() {
       applyLink: 'https://www.capitalone.com/credit-cards/venture/'
     }
   ];
-
-  const handleSendMessage = () => {
-    if (inputMessage.trim() === '') return;
-
-    // Add user message
-    const newUserMessage = {
-      type: 'user',
-      content: inputMessage
-    };
-
-    // Mock AI response (you'll replace this with actual API call)
-    const mockResponse = {
-      type: 'assistant',
-      content: 'Thank you for your question! This is a placeholder response. In the full implementation, I will provide detailed information about the credit cards based on your specific inquiry.'
-    };
-
-    setChatMessages([...chatMessages, newUserMessage, mockResponse]);
-    setInputMessage('');
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
 
   // Summary text explaining the recommendations
   const recommendationSummary = `Based on your spending patterns and preferences, we've identified three credit cards that best match your financial goals. The Chase Sapphire Preferred offers excellent travel flexibility with strong dining rewards, making it ideal for frequent travelers. The American Express Gold Card maximizes rewards for dining and grocery spending, perfect for food enthusiasts. The Capital One Venture Rewards provides simple, consistent earning on all purchases with valuable travel benefits. Each card offers unique advantages: Sapphire Preferred for travel flexibility, Gold Card for dining maximization, and Venture for simplicity and broad acceptance.`;
@@ -201,18 +172,6 @@ function RecommendationResultPage() {
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Chat Section - simplified to just input like AppPage */}
-          <div className={styles.chatInputContainer}>
-            <textarea
-              className={styles.chatInput}
-              placeholder="Ask a question about these credit cards... (Press Enter to send, Shift+Enter for newline)"
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              rows={2}
-            />
           </div>
         </div>
       </main>
