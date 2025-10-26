@@ -228,6 +228,10 @@
 /* File Upload */
 .fileUploadWrapper {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .fileInput {
@@ -235,7 +239,9 @@
 }
 
 .fileUploadBtn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.7rem 1.5rem;
   background: #f3f4f6;
   border: 2px dashed #d1d5db;
@@ -252,6 +258,15 @@
 .fileUploadBtn:hover {
   border-color: #000000;
   background: #e5e7eb;
+}
+
+.fileIdIndicator {
+  font-size: 0.75rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-family: monospace;
 }
 
 /* Textarea */

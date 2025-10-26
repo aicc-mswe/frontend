@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { generateRecommendation } from '../../services/api';
+import { generateRecommendation, uploadPDF } from '../../services/api';
 import styles from './AppPage.module.css';
 
 function AppPage() {
@@ -9,6 +9,8 @@ function AppPage() {
   const [selectedRewardTypes, setSelectedRewardTypes] = useState([]);
   const [annualFeeRange, setAnnualFeeRange] = useState('');
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [uploadedFileId, setUploadedFileId] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [otherDescription, setOtherDescription] = useState('');
   const [activeMenu, setActiveMenu] = useState('recommend');
   const [isLoading, setIsLoading] = useState(false);
@@ -40,10 +42,49 @@ function AppPage() {
     );
   };
 
-  const handleFileUpload = (event) => {
+  const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
+      // Validate file type
+      if (file.type !== 'application/pdf') {
+        setError('Please upload a PDF file.');
+        return;
+      }
+      
+      // Validate file size (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        setError('File size must be less than 10MB.');
+        return;
+      }
+      
       setUploadedFile(file);
+      setError(null);
+      setIsUploading(true);
+      
+      try {
+        console.log('Uploading PDF:', file.name);
+        const result = await uploadPDF(file);
+        console.log('PDF upload result:', result);
+        
+        // Backend returns fileId inside data object: { success, message, data: { fileId, ... } }
+        // Check for fileId in data object first, then fall back to root level
+        const fileId = result.data?.fileId || result.fileId || result.id || result.file_id || result.uuid;
+        
+        if (!fileId) {
+          console.error('No fileId found in response:', result);
+          throw new Error('Backend did not return a fileId. Response: ' + JSON.stringify(result));
+        }
+        
+        setUploadedFileId(fileId);
+        console.log('File uploaded successfully with ID:', fileId);
+      } catch (err) {
+        console.error('Failed to upload PDF:', err);
+        setError(`Failed to upload PDF: ${err.message}`);
+        setUploadedFile(null);
+        setUploadedFileId(null);
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
@@ -55,7 +96,7 @@ function AppPage() {
     if (selectedCardTypes.length === 0 && 
         selectedRewardTypes.length === 0 && 
         !annualFeeRange && 
-        !uploadedFile && 
+        !uploadedFileId && 
         !otherDescription.trim()) {
       setError('Please select at least one preference or provide additional requirements.');
       return;
@@ -69,22 +110,27 @@ function AppPage() {
         cardTypes: selectedCardTypes,
         rewardTypes: selectedRewardTypes,
         annualFeeRange: annualFeeRange,
-        statementFile: uploadedFile,
+        fileId: uploadedFileId, // Use fileId instead of file
         additionalRequirements: otherDescription
       };
 
-      console.log('Sending recommendation request:', {
+      console.log('=== Generating Recommendation ===');
+      console.log('Sending recommendation request with data:', {
         cardTypes: selectedCardTypes,
         rewardTypes: selectedRewardTypes,
         annualFeeRange,
-        uploadedFile: uploadedFile?.name,
+        fileId: uploadedFileId,
         additionalRequirements: otherDescription
       });
+      console.log('uploadedFileId state value:', uploadedFileId);
+      console.log('uploadedFileId type:', typeof uploadedFileId);
+      console.log('requestData.fileId:', requestData.fileId);
 
       // Submit job to API
       const result = await generateRecommendation(requestData);
       
       console.log('Job submission result:', result);
+      console.log('=== End Generating Recommendation ===');
       
       // Check if we got a jobId (async mode) or direct data (sync mode)
       if (result.jobId) {
@@ -194,19 +240,36 @@ function AppPage() {
 
         {/* Statement Upload */}
         <div className={styles.formSection}>
-          <h3>Upload Statement</h3>
-          <p className={styles.helperText}>Upload your credit card statement to get personalized recommendations</p>
+          <h3>Upload Statement (PDF)</h3>
+          <p className={styles.helperText}>Upload your credit card statement PDF to get personalized recommendations</p>
           <div className={styles.fileUploadWrapper}>
             <input
               type="file"
               id="file-upload"
               className={styles.fileInput}
-              accept=".pdf,.csv,.xlsx"
+              accept=".pdf"
               onChange={handleFileUpload}
+              disabled={isUploading}
             />
             <label htmlFor="file-upload" className={styles.fileUploadBtn}>
-              {uploadedFile ? uploadedFile.name : 'Choose File'}
+              {isUploading ? (
+                <>
+                  <span className={styles.spinner}></span>
+                  Uploading...
+                </>
+              ) : uploadedFile ? (
+                <>
+                  ✓ {uploadedFile.name}
+                </>
+              ) : (
+                'Choose PDF File'
+              )}
             </label>
+            {uploadedFileId && (
+              <span className={styles.fileIdIndicator}>
+                File ID: {uploadedFileId.substring(0, 8)}...
+              </span>
+            )}
           </div>
         </div>
 
@@ -227,7 +290,7 @@ function AppPage() {
         <button 
           className={styles.generateBtn} 
           onClick={handleGenerateRecommendation}
-          disabled={isLoading}
+          disabled={isLoading || isUploading}
         >
           {isLoading ? (
             <>

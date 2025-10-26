@@ -1,5 +1,39 @@
 // API base URL - configurable via environment variables
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+
+/**
+ * Upload PDF file to backend
+ * @param {File} pdfFile - PDF file to upload
+ * @returns {Promise<Object>} Upload result with fileId
+ */
+export const uploadPDF = async (pdfFile) => {
+  try {
+    const formData = new FormData();
+    formData.append('pdf', pdfFile);
+    
+    console.log('Uploading PDF to:', `${API_BASE_URL}/upload/pdf`);
+    
+    const response = await fetch(`${API_BASE_URL}/upload/pdf`, {
+      method: 'POST',
+      body: formData,
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `PDF upload failed with status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('PDF upload response data:', data);
+    
+    // Return the full response data
+    // Backend may return: { success, message, fileId, fileName, filePath, ... }
+    return data;
+  } catch (error) {
+    console.error('Error uploading PDF:', error);
+    throw error;
+  }
+};
 
 /**
  * Generate credit card recommendations (async job submission)
@@ -7,7 +41,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000
  * @param {Array<string>} requestData.cardTypes - Selected card types
  * @param {Array<string>} requestData.rewardTypes - Selected reward types
  * @param {string} requestData.annualFeeRange - Annual fee range
- * @param {File|null} requestData.statementFile - Uploaded statement file
+ * @param {string|null} requestData.fileId - Previously uploaded PDF fileId
  * @param {string} requestData.additionalRequirements - Additional requirements description
  * @returns {Promise<Object>} Job submission result with jobId
  */
@@ -26,9 +60,18 @@ export const generateRecommendation = async (requestData) => {
     // Append JSON data
     formData.append('filters', JSON.stringify(filterData));
     
-    // Append file if exists
-    if (requestData.statementFile) {
-      formData.append('statementFile', requestData.statementFile);
+    // Append fileId if exists (from previous PDF upload)
+    if (requestData.fileId) {
+      console.log('Adding fileId to FormData:', requestData.fileId);
+      formData.append('fileId', requestData.fileId);
+    } else {
+      console.log('No fileId provided to generateRecommendation');
+    }
+    
+    console.log('Sending recommendation request to:', `${API_BASE_URL}/recommendations/generate`);
+    console.log('FormData entries:');
+    for (let pair of formData.entries()) {
+      console.log(`  ${pair[0]}:`, pair[1]);
     }
     
     const response = await fetch(`${API_BASE_URL}/recommendations/generate`, {
