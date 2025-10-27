@@ -1,9 +1,3 @@
-.summaryTitle {
-  font-size: 1.25rem;
-  color: #000000;
-  margin: 0 0 0.5rem 0;
-  font-weight: 700;
-}
 * {
   margin: 0;
   padding: 0;
@@ -172,18 +166,30 @@
 
 /* Summary Section */
 .summarySection {
-  background: #ffffff;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1.75rem;
   margin-bottom: 2rem;
-  border: 1px solid #e5e7eb;
+  border: 2px solid #0ea5e9;
+  box-shadow: 0 4px 6px rgba(14, 165, 233, 0.1);
+}
+
+.summaryTitle {
+  font-size: 1.25rem;
+  color: #0c4a6e;
+  margin: 0 0 0.75rem 0;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .summaryText {
-  font-size: 1rem;
-  color: #4b5563;
-  line-height: 1.6;
+  font-size: 1.05rem;
+  color: #1e40af;
+  line-height: 1.7;
   margin: 0;
+  font-weight: 500;
 }
 
 /* Cards Table */
