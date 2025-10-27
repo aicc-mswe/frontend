@@ -89,6 +89,7 @@ function RecommendationResultPage() {
       clearInterval(pollInterval);
       clearTimeout(timeoutId);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jobId, directData]);
 
   // Extract data from API response structure
@@ -97,27 +98,32 @@ function RecommendationResultPage() {
   // Use API returned card data from recommendations array
   const recommendedCards = apiData?.recommendations || [];
 
-  // Use API returned summary or generate from filters
+  // Use AI-generated summary if available, otherwise generate from filters
   const generateSummaryFromFilters = () => {
     if (!apiData?.filters) return 'Based on your preferences, we\'ve identified the best credit cards that match your financial goals.';
     
-    const { cardTypes, rewardTypes, annualFeeRange } = apiData.filters;
+    const { cardTypes, rewardTypes } = apiData.filters;
     const cardTypesText = cardTypes?.length > 0 ? cardTypes.join(', ') : 'any card type';
     const rewardTypesText = rewardTypes?.length > 0 ? rewardTypes.join(', ') : 'various rewards';
     
     return `Based on your preferences for ${cardTypesText} with ${rewardTypesText} rewards, we've identified ${apiData.count || 0} credit cards that best match your financial goals.`;
   };
   
+  // Prioritize AI-generated summary over auto-generated one
   const recommendationSummary = apiData?.summary || generateSummaryFromFilters();
   
   // Generate title from filters
   const generateTitle = () => {
-    if (!apiData?.filters) return 'Credit Card Recommendations';
+    if (!apiData?.filters) return 'Personalized Recommendations';
     const { rewardTypes } = apiData.filters;
-    if (rewardTypes?.length > 0) {
-      return rewardTypes.join(' & ') + ' Focus';
+    
+    // Filter out "Any" or empty values
+    const validRewardTypes = rewardTypes?.filter(type => type && type.toLowerCase() !== 'any');
+    
+    if (validRewardTypes?.length > 0) {
+      return validRewardTypes.join(' & ') + ' Rewards';
     }
-    return 'Credit Card Recommendations';
+    return 'Personalized Recommendations';
   };
   
   const resultTitle = location?.state?.historyData?.title || generateTitle();
@@ -213,7 +219,9 @@ function RecommendationResultPage() {
 
           {/* Summary Section */}
           <div className={styles.summarySection}>
-            <h3 className={styles.summaryTitle}>Recommemdation Summary</h3>
+            <h3 className={styles.summaryTitle}>
+              {apiData?.summary ? 'AI Recommendation Summary' : 'Recommendation Summary'}
+            </h3>
             <p className={styles.summaryText}>{recommendationSummary}</p>
           </div>
 
