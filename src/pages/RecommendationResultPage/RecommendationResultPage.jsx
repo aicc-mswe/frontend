@@ -279,12 +279,6 @@ function RecommendationResultPage() {
                 <div key={`pros-${card.id}`} className={styles.cell}>{renderList(card.pros)}</div>
               ))}
 
-              {/* Cons */}
-              <div className={`${styles.featureCell} ${styles.stickyCol}`}>Cons</div>
-              {recommendedCards.map(card => (
-                <div key={`cons-${card.id}`} className={styles.cell}>{renderList(card.cons)}</div>
-              ))}
-
               {/* Apply Button */}
               <div className={`${styles.featureCell} ${styles.stickyCol}`}>Apply</div>
               {recommendedCards.map(card => (
