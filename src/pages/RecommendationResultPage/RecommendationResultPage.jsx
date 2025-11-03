@@ -261,6 +261,12 @@ function RecommendationResultPage() {
                 <div key={`fee-${card.id}`} className={styles.cell}>{card.fee}</div>
               ))}
 
+              {/* Sign-up Bonus */}
+              <div className={`${styles.featureCell} ${styles.stickyCol}`}>Sign-up Bonus</div>
+              {recommendedCards.map(card => (
+                <div key={`bonus-${card.id}`} className={styles.cell}>{card.signUpBonus || 'N/A'}</div>
+              ))}
+
               {/* Rewards */}
               <div className={`${styles.featureCell} ${styles.stickyCol}`}>Rewards</div>
               {recommendedCards.map(card => (
