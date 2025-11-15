@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { checkRecommendationStatus } from '../../services/api';
+import { checkRecommendationStatus, sendChatMessage } from '../../services/api';
+import { saveRecommendation, addChatMessage } from '../../utils/historyManager';
+import ChatBox from '../../components/ChatBox/ChatBox';
 import styles from './RecommendationResultPage.module.css';
 
 function RecommendationResultPage() {
@@ -12,10 +14,64 @@ function RecommendationResultPage() {
   const [recommendationData, setRecommendationData] = useState(null);
   const [error, setError] = useState(null);
   const [pollCount, setPollCount] = useState(0);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [isChatLoading, setIsChatLoading] = useState(false);
+  const [currentRecommendationId, setCurrentRecommendationId] = useState(null);
 
   // Get jobId or direct data from location state
   const jobId = location?.state?.jobId;
   const directData = location?.state?.recommendationData;
+  const requestFilters = location?.state?.requestFilters;
+  const isFromHistory = location?.state?.isFromHistory; // Flag to check if viewing from history
+
+  // Save recommendation to history when data is loaded (only for NEW recommendations)
+  useEffect(() => {
+    // Don't save if this is from viewing history
+    if (isFromHistory) {
+      console.log('Viewing recommendation from history - skipping save');
+      // Load existing recommendation ID and chat history
+      const historyData = location?.state?.historyData;
+      if (historyData) {
+        setCurrentRecommendationId(historyData.id);
+        setChatHistory(historyData.chatHistory || []);
+      }
+      return;
+    }
+
+    if (recommendationData && !isProcessing && !error) {
+      // Prepare data to save
+      const apiData = recommendationData?.data;
+      const recommendedCards = apiData?.recommendations || [];
+      
+      if (recommendedCards.length > 0) {
+        // Generate title from filters
+        const rewardTypes = apiData?.filters?.rewardTypes?.filter(type => type && type.toLowerCase() !== 'any');
+        const title = rewardTypes?.length > 0 
+          ? rewardTypes.join(' & ') + ' Rewards'
+          : 'Personalized Recommendations';
+        
+        // Generate summary
+        const summary = apiData?.summary || `Based on your preferences, we've identified ${recommendedCards.length} credit cards that match your financial goals.`;
+        
+        // Save to history
+        const historyEntry = {
+          title,
+          summary,
+          cards: recommendedCards.length,
+          filters: apiData?.filters || requestFilters || {},
+          recommendations: recommendedCards,
+          fullData: recommendationData // Save complete response for reference
+        };
+        
+        const savedEntry = saveRecommendation(historyEntry);
+        if (savedEntry) {
+          console.log('Recommendation saved to history successfully');
+          setCurrentRecommendationId(savedEntry.id);
+          setChatHistory([]);
+        }
+      }
+    }
+  }, [recommendationData, isProcessing, error, requestFilters, isFromHistory, location?.state?.historyData]);
 
   // Polling logic
   useEffect(() => {
@@ -127,6 +183,67 @@ function RecommendationResultPage() {
   };
   
   const resultTitle = location?.state?.historyData?.title || generateTitle();
+
+  // Handle sending chat messages
+  const handleSendChatMessage = async (message) => {
+    if (!currentRecommendationId || !message.trim()) return;
+
+    // Add user message to chat history
+    const userMessage = {
+      id: `msg-${Date.now()}`,
+      role: 'user',
+      content: message,
+      timestamp: Date.now()
+    };
+
+    setChatHistory(prev => [...prev, userMessage]);
+    addChatMessage(currentRecommendationId, userMessage);
+    setIsChatLoading(true);
+
+    try {
+      // Prepare recommendation data for context
+      const contextData = {
+        summary: recommendationSummary,
+        title: resultTitle,
+        filters: apiData?.filters || {},
+        recommendations: recommendedCards
+      };
+
+      // Send message to backend
+      const response = await sendChatMessage(
+        currentRecommendationId,
+        message,
+        chatHistory,
+        contextData
+      );
+
+      // Add assistant response to chat history
+      const assistantMessage = {
+        id: `msg-${Date.now()}`,
+        role: 'assistant',
+        content: response.data?.reply || response.reply || 'Sorry, I could not generate a response.',
+        timestamp: Date.now()
+      };
+
+      setChatHistory(prev => [...prev, assistantMessage]);
+      addChatMessage(currentRecommendationId, assistantMessage);
+    } catch (error) {
+      console.error('Failed to send chat message:', error);
+      
+      // Add error message
+      const errorMessage = {
+        id: `msg-${Date.now()}`,
+        role: 'assistant',
+        content: `Sorry, I encountered an error: ${error.message}. Please try again.`,
+        timestamp: Date.now()
+      };
+      
+      setChatHistory(prev => [...prev, errorMessage]);
+      addChatMessage(currentRecommendationId, errorMessage);
+    } finally {
+      setIsChatLoading(false);
+    }
+  };
 
   // Helper to render list cells
   const renderList = (items) => (
@@ -296,6 +413,15 @@ function RecommendationResultPage() {
               ))}
             </div>
           </div>
+
+          {/* Chat Box - Only show when recommendation is loaded */}
+          {currentRecommendationId && (
+            <ChatBox
+              chatHistory={chatHistory}
+              onSendMessage={handleSendChatMessage}
+              isLoading={isChatLoading}
+            />
+          )}
           </div>
         )}
       </main>

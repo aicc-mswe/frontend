@@ -170,3 +170,39 @@ export const getRecommendationById = async (recommendationId) => {
     throw error;
   }
 };
+
+/**
+ * Send a chat message for a specific recommendation
+ * @param {string} recommendationId - Recommendation ID
+ * @param {string} message - User's chat message
+ * @param {Array} chatHistory - Previous chat history
+ * @param {Object} recommendationData - The recommendation data (cards, filters, etc.)
+ * @returns {Promise<Object>} AI response
+ */
+export const sendChatMessage = async (recommendationId, message, chatHistory, recommendationData) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/recommendations/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        recommendationId,
+        message,
+        chatHistory,
+        recommendationData
+      }),
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `Chat request failed with status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error sending chat message:', error);
+    throw error;
+  }
+};
